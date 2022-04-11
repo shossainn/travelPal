@@ -1,0 +1,140 @@
+<html>
+  <head>
+    <title>TRAVEL PAL</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1 style="text-align: center; text-decoration: underline;">
+      ENTRY REQUIREMENTS
+    </h1>
+    <p style="text-align: center;">
+      Last Updated: <span id="date-time"></span>
+    </p>
+    <script>
+      var dt = new Date();
+      document.getElementById("date-time").innerHTML = dt;
+    </script>
+    <div class="container mt-3 ">
+      <table class="table table-dark text-white">
+        <thead>
+          <th>Destination</th>
+          <th>Status?</th>
+
+          <th>Visa required?</th>
+          <th>COVID-19 required?</th>
+          <th>Minimum passport valadation req?</th>
+          <th>Currency</th>
+        </thead>
+
+        <tbody id="tbody1"></tbody>
+      </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script id="MainScript">
+      /// Firebase configuration data
+      var firebaseConfig = {
+        apiKey: "AIzaSyDcr2p1eMAm-wLHZdX68ynGLyj297ggbps",
+        authDomain: "travelpal-c25ae.firebaseapp.com",
+        databaseURL: "https://travelpal-c25ae-default-rtdb.firebaseio.com",
+        projectId: "travelpal-c25ae",
+        storageBucket: "travelpal-c25ae.appspot.com",
+        messagingSenderId: "543720675001",
+        appId: "1:543720675001:web:9ff839b364a93047716d68",
+        measurementId: "G-B3PWDMPH55"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      //
+
+      function SelectAllData() {
+        firebase
+          .database()
+          .ref("Countries")
+          .once("value", function(AllRecords) {
+            AllRecords.forEach(function(CurrentRecord) {
+              var Destination = CurrentRecord.val().destination;
+              var passport = CurrentRecord.val().passportReq;
+              var visa = CurrentRecord.val().visaReq;
+              var covid = CurrentRecord.val().covid;
+              var status = CurrentRecord.val().status;
+              var Currency = CurrentRecord.val().Currency;
+
+              AddItemsToTable(
+                Destination,
+                passport,
+                visa,
+                covid,
+                status,
+                Currency
+              );
+            });
+          });
+      }
+
+      window.onload = SelectAllData;
+
+      //table
+      //   var stdNo = 0;
+      function AddItemsToTable(
+        Destination,
+        passport,
+        visa,
+        covid,
+        status,
+        Currency
+      ) {
+        var tbody = document.getElementById("tbody1");
+        var trow = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        var td3 = document.createElement("td");
+        var td4 = document.createElement("td");
+        var td5 = document.createElement("td");
+        var td6 = document.createElement("td");
+        var td7 = document.createElement("td");
+
+        // td1.innerHTML = ++stdNo;
+        td2.innerHTML = Destination;
+        td3.innerHTML = status;
+        td4.innerHTML = covid;
+        td5.innerHTML = visa;
+        td6.innerHTML = passport;
+        td7.innerHTML = Currency;
+
+        // trow.appendChild(td1);
+        trow.appendChild(td2);
+        trow.appendChild(td3);
+        trow.appendChild(td4);
+        trow.appendChild(td5);
+        trow.appendChild(td6);
+        trow.appendChild(td7);
+        tbody.appendChild(trow);
+      }
+    </script>
+
+    <!-- <a href="index.html">
+      <button
+        style="background-color: #4169e1; color: white; text-align: center;"
+      >
+        BACK
+      </button></a -->
+
+    <a></a>
+
+    <a href="index.html">
+      <button
+        style="background-color: #4169e1; color: white; text-align: center;"
+      >
+        refresh
+      </button></a
+    >
+  </body>
+</html>
